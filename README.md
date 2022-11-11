@@ -5,3 +5,10 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 ## Recommended IDE Setup
 
 - [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+
+
+## deploy to GitHub Pages
+
+- npm run build
+- git add dist -f
+- git subtree push --prefix dist origin gh-pages 
