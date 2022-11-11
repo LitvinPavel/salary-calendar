@@ -1,7 +1,7 @@
 <template>
   <main>
-    <div class="flex items-center justify-center py-8 px-4">
-      <div class="max-w-sm w-full shadow-lg">
+    <div class="flex items-center justify-center py-8">
+      <div class="max-w-lg w-full shadow-lg">
         <div class="md:p-8 p-5 dark:bg-gray-800 bg-white rounded-t">
           <PlSummary
             :year="currentYear"
@@ -27,7 +27,7 @@
             </table>
           </div>
         </div>
-        <div
+        <!-- <div
           class="
             md:py-8
             py-5
@@ -43,7 +43,7 @@
             :month="currentMonth"
             :day="currentDate"
           />
-        </div>
+        </div> -->
       </div>
     </div>
   </main>

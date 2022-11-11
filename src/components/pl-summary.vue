@@ -1,18 +1,14 @@
 <template>
-  <div class="px-4 flex flex-col space-y-2">
+  <form class="px-4 flex flex-col items-start space-y-2 w-full" @submit.prevent>
     <label class="block text-gray-100 text-sm font-bold mb-2" for="username">
       Сколько ты получаешь?
     </label>
     <input type="number" v-model.number="salary" placeholder="зепка" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-100 leading-tight focus:outline-none focus:shadow-outline" />
-    <div class="flex justify-between">
-      <span>Твой аванс 27 числа:</span>
-      <span>{{ firstSalary.toFixed(2) }}</span>
-    </div>
-    <div class="flex justify-between">
-      <span>Твоя ЗП 12 числа:</span>
-      <span>{{ lastSalary.toFixed(2) }}</span>
-    </div>
-  </div>
+    <p>Твой аванс 27 числа:</p>
+    <h3 class="ml-auto font-bold underline">{{ firstSalary.toFixed(2) }} ₽</h3>
+    <p>Твоя ЗП 12 числа:</p>
+    <h3 class="ml-auto font-bold underline">{{ lastSalary.toFixed(2) }} ₽</h3>
+  </form>
 </template>
 
 <script>

@@ -11,4 +11,5 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 
 - npm run build
 - git add dist -f
+- git push origin master
 - git subtree push --prefix dist origin gh-pages 
