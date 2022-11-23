@@ -1,0 +1,19 @@
+.pl {
+  &-align {
+    &-center {
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    &-x {
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &-y {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+}

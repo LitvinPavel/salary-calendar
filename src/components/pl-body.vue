@@ -310,8 +310,9 @@ export default {
       const time = new Date(this.year, this.month);
       time.setDate(0);
       const lastMonthLength = ((time.getDay() + 7 - 1) % 7) + 1;
+      
       const lastMonthfirst = time.getDate() - (lastMonthLength - 1);
-
+      console.log(lastMonthfirst)
       for (let i = 0; i < lastMonthLength; i++) {
         arr.push({ isCurrent: false, day: lastMonthfirst + i });
       }
@@ -324,7 +325,7 @@ export default {
       }
 
       time.setMonth(time.getMonth() + 1, 1);
-      const nextMonthLength = 42 - (lastMonthLength + curMonthLength);
+      const nextMonthLength = 70 - (lastMonthLength + curMonthLength);
 
       for (let i = 0; i < nextMonthLength; i++) {
         arr.push({ isCurrent: false, day: 1 + i });

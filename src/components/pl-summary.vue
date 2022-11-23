@@ -15,6 +15,12 @@
 import { getCalendar } from "../api/calendar.js";
 const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1];
 
+const vacation = {
+  year: 2022,
+  month: 10,
+  period: [5, 6, 7, 8, 9, 10, 11]
+};
+
 export default {
   props: {
     month: {
@@ -30,7 +36,8 @@ export default {
     return {
       salary: 0,
       firstDays: "",
-      lastDays: ""
+      lastDays: "",
+      vacationDays: ""
     };
   },
   computed: {
@@ -55,6 +62,14 @@ export default {
         : 0;
       const last = this.lastDays.split("").slice(15);
       return last.filter((item) => +item !== 1).length * salaryByDay;
+    },
+    vacationSalary() {
+      const salaryByDay = this.salary
+        ? +this.salary /
+          this.vacationDays.split("").filter((item) => +item !== 1).length
+        : 0;
+      const last = this.lastDays.split("").slice(15);
+      return last.filter((item) => +item !== 1).length * salaryByDay;
     }
   },
   watch: {
@@ -63,6 +78,7 @@ export default {
       handler() {
         this.getFirst();
         this.getLast();
+        this.getVacation();
       }
     },
     salary(val) {
@@ -87,6 +103,9 @@ export default {
     },
     async getLast() {
       this.lastDays = await this.fetchCalendar(this.prevYear, this.prevMonth);
+    },
+    async getVacation() {
+      this.vacationDays = await this.fetchCalendar(vacation.year, vacation.month);
     },
     async fetchCalendar(year, month) {
       try {

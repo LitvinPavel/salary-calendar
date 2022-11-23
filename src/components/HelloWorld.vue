@@ -1,20 +1,30 @@
 <template>
   <main>
+    <!-- <pl-test /> -->
     <div class="flex items-center justify-center py-8">
       <div class="max-w-lg w-full shadow-lg">
         <div class="md:p-8 p-5 dark:bg-gray-800 bg-white rounded-t">
-          <PlSummary
-            :year="currentYear"
-            :month="currentMonth"
-            class="mb-4 pb-4 border-b"
-          />
-          <PlMonth
+          {{calendarCurrent}} {{calendarPrev}}
+          <pl-month
             :month="currentMonth"
             :year="currentYear"
             @select="currentMonth = $event"
             @changeYear="currentYear = $event"
           />
-          <div class="flex items-center justify-between pt-12 overflow-x-auto">
+          <pl-summary-tail>
+            <template #workDays>
+              <pl-work-days :days="calendarPrev.days" />
+            </template>
+          </pl-summary-tail>
+          
+          <!-- <pl-test /> -->
+          <!-- <PlSummary
+            :year="currentYear"
+            :month="currentMonth"
+            class="mb-4 pb-4 border-b"
+          /> -->
+          
+          <!-- <div class="flex items-center justify-between pt-12 overflow-x-auto">
             <table class="w-full">
               <PlHead />
               <PlBody
@@ -25,7 +35,7 @@
                 @select="currentDate = $event"
               />
             </table>
-          </div>
+          </div> -->
         </div>
         <!-- <div
           class="
@@ -63,28 +73,58 @@ export default {
   name: "HelloWorld",
   data() {
     return {
-      calendarData: "",
+      calendarPrev: null,
+      calendarCurrent: null,
       currentMonth: new Date().getMonth(),
       currentYear: new Date().getFullYear(),
       currentDate: new Date().getDate()
     };
   },
   async created() {
-    await this.fetchCalendar();
+    await this.fetchCurrent();
+    await this.fetchPrev();
   },
   watch: {
     currentMonth() {
-      this.fetchCalendar();
+      this.fetchCurrent();
+      this.fetchPrev();
     }
   },
+  computed: {
+    prevMonth() {
+      return +this.currentMonth === 0 ? 11 : this.currentMonth - 1;
+    },
+    prevYear() {
+      return +this.currentMonth !== 0 ? this.currentYear : this.currentYear - 1;
+    },
+  },
   methods: {
-    async fetchCalendar() {
+    async fetchCurrent() {
       try {
         const data = await getCalendar(
           this.currentYear,
           months[this.currentMonth]
         );
-        this.calendarData = data;
+        this.calendarCurrent = {
+          month: this.currentMonth,
+          year: this.currentYear,
+          days: data
+        };
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    async fetchPrev() {
+      try {
+        const data = await getCalendar(
+          this.prevYear,
+          months[this.prevMonth]
+        );
+        this.calendarPrev = {
+          month: this.prevMonth,
+          year: this.prevYear,
+          days: data
+        };
       } catch (e) {
         console.error(e);
       }
