@@ -13,7 +13,7 @@
       <PlChevronLeft class="w-5 h-5" />
     </router-link>
     <h4 >
-      Твоя ЗП
+      Твоя Зепка
     </h4>
     <ul v-for="(months, year) in salary" :key="`${year}-salary`">
       <caption class="text-xl mt-4">
