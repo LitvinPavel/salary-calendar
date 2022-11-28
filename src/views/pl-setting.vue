@@ -12,13 +12,64 @@
     >
       <PlChevronLeft class="w-5 h-5" />
     </router-link>
+    <h4 >
+      Твоя ЗП
+    </h4>
+    <ul v-for="(months, year) in salary" :key="`${year}-salary`">
+      <caption class="text-xl mt-4">
+        {{
+          year
+        }}
+      </caption>
+      <li v-for="(value, month) in months" :key="`${month}-salary`" class="mb-2">
+        <h5 class="mb-2">{{ monthEnum[month] }}</h5>
+        <p>{{ value }}</p>
+      </li>
+    </ul>
+    <pl-up-salary @add="onAddSalary" />
+    <h4>Отпуск</h4>
     <Datepicker
       v-model="vacationDays"
       dark
       multiDates
+      autoApply
       :format="formatDateSelect"
+      :enableTimePicker="false"
     />
     <ul v-for="(months, year) in vacationDaysByMonth" :key="year">
+      <caption class="text-xl mt-4">
+        {{
+          year
+        }}
+      </caption>
+      <li v-for="(days, month) in months" :key="month" class="mb-2">
+        <span>{{ monthEnum[month] }}</span>
+        <Datepicker
+          :modelValue="getDates(year, month, days)"
+          dark
+          multiDates
+          inline
+          noToday
+          readonly
+          :startDate="new Date(year, month, days[0])"
+          disableMonthYearSelect
+          :enableTimePicker="false"
+        >
+          <template #action-preview> </template>
+          <template #action-select> </template>
+        </Datepicker>
+      </li>
+    </ul>
+    <h4>Переработки</h4>
+    <Datepicker
+      v-model="overtimeDays"
+      dark
+      multiDates
+      autoApply
+      :format="formatDateSelect"
+      :enableTimePicker="false"
+    />
+    <ul v-for="(months, year) in overtimeDaysByMonth" :key="year">
       <caption class="text-xl mt-4">
         {{
           year
@@ -71,13 +122,18 @@ export default {
   data() {
     return {
       vacationDays: [],
+      overtimeDays: [],
+      salary: {},
       monthEnum
     };
   },
   computed: {
     vacationDaysByMonth() {
       return datesToObj(this.vacationDays);
-    }
+    },
+    overtimeDaysByMonth() {
+      return datesToObj(this.overtimeDays);
+    },
   },
   watch: {
     vacationDays(val) {
@@ -86,15 +142,24 @@ export default {
         parsingDates = val.map((d) => d.toJSON());
       }
       localStorage.setItem("vacation-days", parsingDates);
+    },
+    overtimeDays(val) {
+      let parsingDates = [];
+      if (val && val.length) {
+        parsingDates = val.map((d) => d.toJSON());
+      }
+      localStorage.setItem("overtime-days", parsingDates);
     }
   },
   async mounted() {
-    this.vacationDays = (await this.getLocalVacationDays()) || [];
+    this.vacationDays = (await this.getLocalDataDays("vacation-days")) || [];
+    this.overtimeDays = (await this.getLocalDataDays("overtime-days")) || [];
+    this.salary = await this.getLocalSalary();
   },
   methods: {
-    async getLocalVacationDays() {
+    async getLocalDataDays(key) {
       try {
-        const localData = await localStorage.getItem("vacation-days");
+        const localData = await localStorage.getItem(key);
         if (localData) {
           const arrDate = localData.split(",");
           return arrDate.map((d) => new Date(d));
@@ -102,6 +167,15 @@ export default {
       } catch (error) {
         console.log(error);
         return null;
+      }
+    },
+    async getLocalSalary() {
+      try {
+        const localData = await localStorage.getItem("salary");
+        return JSON.parse(localData);
+      } catch (error) {
+        console.log(error);
+        return null
       }
     },
     getDates(year, month, days) {
@@ -115,6 +189,17 @@ export default {
 
         return `${day}/${month}/${year}`;
       });
+    },
+    onAddSalary({ year, month, salary }) {
+      let s = JSON.parse(JSON.stringify(this.salary)) || {}
+      if (s[year]) {
+        s[year][month] = salary
+      } else {
+        s[year] = {
+          [month]: salary
+        }
+      }
+      localStorage.setItem("salary", JSON.stringify(s));
     }
   }
 };

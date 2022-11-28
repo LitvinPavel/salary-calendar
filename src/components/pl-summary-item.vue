@@ -24,7 +24,14 @@
     },
     computed: {
       sum() {
-        return this.days.filter(({ type }) => +type === 0).length * this.daily
+        const workDaysLength = this.days.filter(({ type }) => +type === 0).length;
+        const overtimeDaysLength = this.days.filter(({ type }) => +type === 8).length * 2;
+        return (workDaysLength + overtimeDaysLength) * this.daily;
+      }
+    },
+    watch: {
+      sum(val) {
+        this.$emit("updateSum", { [this.title]: val })
       }
     }
   }

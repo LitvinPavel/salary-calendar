@@ -24,6 +24,10 @@
       vacation: {
         type: Array,
         default: () => []
+      },
+      overtime: {
+        type: Array,
+        default: () => []
       }
     },
     computed: {
@@ -31,7 +35,7 @@
         const days =
           typeof this.days === "string" ? this.days.split("") : this.days;
         return (days || []).map((d, i) => {
-          const type = this.vacation.includes(i + 1) ? 9 : d;
+          const type = this.overtime.includes(i + 1) ? 8 : this.vacation.includes(i + 1) ? 9 : +d;
           return { type: type, count: i + 1 };
         });
         

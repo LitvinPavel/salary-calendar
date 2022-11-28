@@ -1,0 +1,28 @@
+.animodal-enter-active,
+.animodal-leave-active {
+  transition: opacity 0.2s ease 0s;
+  & .animodal-inner {
+    transition: transform 0.3s ease 0.1s, opacity 0.2s ease 0.1s;
+  }
+  & .modal-close {
+    transition: transform 0.2s ease 0.2s, opacity 0.2s ease 0.2s;
+  }
+}
+
+.animodal-leave-active .animodal-inner {
+  transition: transform 0.2s ease 0s, opacity 0.2s ease 0s;
+}
+.animodal-enter,
+.animodal-leave-to {
+  opacity: 0;
+}
+.animodal-enter .animodal-inner,
+.animodal-leave-to .animodal-inner {
+  transform: scale(0.95);
+  opacity: 0;
+}
+.animodal-enter .modal-close,
+.animodal-leave-to .modal-close {
+  opacity: 0;
+  transform: scale(0.95);
+}
