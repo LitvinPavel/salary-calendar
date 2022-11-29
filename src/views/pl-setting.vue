@@ -199,6 +199,7 @@ export default {
           [month]: salary
         }
       }
+      this.salary = s;
       localStorage.setItem("salary", JSON.stringify(s));
     }
   }
