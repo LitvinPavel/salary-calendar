@@ -14,7 +14,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory('/salary-calendar/'),
+  history: createWebHistory('https://litvinpavel.github.io/salary-calendar/'),
   routes,
 });
 
