@@ -1,92 +1,74 @@
 <template>
-  <div class="px-4 flex items-center justify-between">
-    <span
-      tabindex="0"
-      class="
-        focus:outline-none
-        text-base
-        font-bold
-        dark:text-gray-100
-        text-gray-800
-      "
-      >{{ currentMonth }} {{ currentYear }}</span
-    >
-    <div class="flex items-center">
-      <button
-        aria-label="calendar backward"
-        class="
-          focus:text-gray-400
-          hover:text-gray-400
-          text-gray-800
-          dark:text-gray-100
-        "
-        @click="prevMonth"
-      >
-        <PlChevronLeft class="icon icon-tabler icon-tabler-chevron-left" />
-      </button>
-      <button
-        aria-label="calendar forward"
-        class="
-          focus:text-gray-400
-          hover:text-gray-400
-          ml-3
-          text-gray-800
-          dark:text-gray-100
-        "
-        @click="nextMonth"
-      >
-        <PlChevronRight class="icon icon-tabler icon-tabler-chevron-right" />
-      </button>
+  <section class="flex items-center justify-between mb-6">
+    <pl-btn-icon
+      class="swiper-button-prev"
+      icon-name="chevron-left"
+      @click="prev"
+    />
+    <div class="text-xl space-x-2">
+      <span class="">{{ month }}</span>
+      <span class="text-primary">{ {{ year }} }</span>
     </div>
-  </div>
+    <pl-btn-icon
+      class="swiper-button-next"
+      :class="{ 'cursor-not-allowed opacity-50': limitedYear }"
+      icon-name="chevron-right"
+      @click="next(limitedYear)"
+    />
+  </section>
 </template>
 
 <script>
-import PlChevronLeft from './icons/pl-chevron-left.vue';
-import PlChevronRight from './icons/pl-chevron-right.vue';
-
-const monthEnum = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+import { computed } from "vue";
+import { useStore } from "vuex";
+const monthEnum = [
+  "Январь",
+  "Февраль",
+  "Март",
+  "Апрель",
+  "Май",
+  "Июнь",
+  "Июль",
+  "Август",
+  "Сентябрь",
+  "Октябрь",
+  "Ноябрь",
+  "Декабрь"
+];
 
 export default {
-  props: {
-    month: {
-      type: Number,
-      default: 0
-    },
-    year: {
-      type: Number,
-      default: 2000
+  setup () {
+    const store = useStore();
+    const year = computed(() => {
+      return store.getters.currentYear;
+    });
+    const month = computed(() => {
+      const { currentMonth } = store.getters;
+      const m = currentMonth === 12 ? 0 : currentMonth;
+      return monthEnum[m];
+    });
+
+    const limitedYear = computed(() => {
+      const nowYear = new Date().getFullYear();
+      return store.getters.currentYear > nowYear && store.getters.currentMonth === 11;
+    });
+
+    const prev = () => {
+      store.dispatch("prevMonth");
     }
-  },
-  data() {
+
+    const next = (limit) => {
+      if (!limit) {
+        store.dispatch("nextMonth");
+      }
+    }
     return {
-      currentYear: this.year
-    }
-  },
-  computed: {
-    currentMonth() {
-      const month = this.month === 12 ? 0 : this.month
-      return monthEnum[month];
-    }
-  },
-  methods: {
-    prevMonth() {
-      if (this.month === 0) {
-        this.currentYear = this.currentYear - 1;
-        this.$emit("changeYear", this.currentYear);
-      }
-      const month = this.month > 0 ? this.month - 1 : 11;
-      this.$emit("select", month)
-    },
-    nextMonth() {
-      if (this.month === 11) {
-        this.currentYear = this.currentYear + 1;
-        this.$emit("changeYear", this.currentYear);
-      }
-      const month = this.month < 11 ? this.month + 1 : 0;
-      this.$emit("select", month)
-    }
-  },
-  components: { PlChevronLeft, PlChevronRight } 
+      year,
+      month,
+      limitedYear,
+      prev,
+      next
+    };
+  }
 };
 </script>

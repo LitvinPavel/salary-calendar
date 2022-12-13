@@ -1,18 +1,34 @@
 <template>
-  <ul class="flex flex-wrap -ml-0.5 -mt-0.5">
+  <ul class="flex flex-wrap -ml-0.5 -mt-0.5 pb-3">
     <li
-      v-for="({ count, type }, index) in workDays"
+      v-for="(day, index) in days"
       :key="index"
-      class="w-4 h-4 relative rounded-sm text-xxs bg-slate-400 ml-0.5 mt-0.5 cursor-pointer hover:bg-slate-700"
-      :class="{ 'bg-red-400': +type === 8 }"
-      :title="`${Math.round(+type === 8 ? daily * 2 : daily)} ₽`"
+      class="
+        w-10
+        h-10
+        relative
+        rounded-sm
+        ml-0.5
+        mt-0.5
+        cursor-pointer
+      "
+      :class="color"
     >
-      <span class="absolute pl-align-center">{{ count }}</span>
+      <span class="absolute pl-align-center">{{ day }}</span>
     </li>
   </ul>
 </template>
 
 <script>
+import { computed } from "vue";
+import PART_WORK_DAYS_TYPES from "@/utils/enum/part-work-days-types";
+
+const colors = {
+  [PART_WORK_DAYS_TYPES.CURRENT]: "bg-primary",
+  [PART_WORK_DAYS_TYPES.PREV]: "bg-accent",
+  [PART_WORK_DAYS_TYPES.VACATION]: "bg-warning"
+}
+
 export default {
   name: "pl-work-days",
   props: {
@@ -20,14 +36,17 @@ export default {
       type: Array,
       default: () => []
     },
-    daily: {
-      type: Number,
-      default: 0
+    type: {
+      type: String,
+      default: PART_WORK_DAYS_TYPES.CURRENT
     }
   },
-  computed: {
-    workDays() {
-      return this.days.filter(({ type }) => (+type === 0 || +type === 8));
+  setup(props) {
+    const color = computed(() => {
+      return colors[props.type] || null;
+    });
+    return {
+      color
     }
   }
 };

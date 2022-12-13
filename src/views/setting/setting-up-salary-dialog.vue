@@ -1,5 +1,5 @@
 <template>
-  <pl-modal title="+ Изменение ЗП">
+  <pl-dialog getter-name="showUpSalaryModal" action-name="setUpSalaryModal">
     <template #content="{ close }">
       <form class="space-y-2 flex flex-col" @submit.prevent>
         <label class="block text-gray-100 text-sm font-bold mb-2" for="salary">
@@ -15,36 +15,29 @@
         <label class="block text-gray-100 text-sm font-bold mb-2" for="salary">
           Укажи месяца
         </label>
-        <Datepicker
+        <vue-datepicker
           v-model="month"
           dark
           monthPicker
           autoApply
         />
-        <button class="rounded bg-slate-400 py-1 px-2 text-white ml-auto" @click="onAdd(close)">Добавить</button>
+        <button class="rounded bg-slate-400 py-1 px-2 text-white ml-auto" @click="onAdd($event, close, salary, month)">Добавить</button>
       </form>
     </template>
-  </pl-modal>
+  </pl-dialog>
 </template>
 
 <script>
-import { ref, computed } from "vue";
-import { useStore } from "vuex";
+import { ref } from "vue";
 
 export default {
   setup() {
-    const store = useStore();
     const month = ref({});
-    const salary = ref(0);
-    // const show = computed(() => {
-    //   return store.getters.showUpSalaryModal;
-    // });
-    
-    function onAdd(close) {
-      if (Object.keys(this.month).length && this.salary) {
-        this.$emit("add", { ...this.month, salary: this.salary });
-        close();
-      }
+    let salary = 0;
+
+    const onAdd = ($event, close, s, m) => {
+      close($event, { salary: s, data: m });
+      salary = 0;
     }
     return {
       month,
