@@ -1,10 +1,14 @@
 <template>
   <div
-    class="rounded-full w-8 h-8 mb-3"
+    class="rounded-full w-8 h-8 relative"
     :style="`background: linear-gradient(to top, var(--primary) ${percent}%, var(--base-weak) ${
       percent > 95 ? 100 : percent + 5
     }%);`"
-  ></div>
+  >
+    <span class="text-xxs text-secondary-weak font-semibold absolute pl-align-center">
+      {{ percent === 1 ? 0 : Math.round(percent) }}%
+    </span>
+  </div>
 </template>
 
 <script>

@@ -1,9 +1,14 @@
 <template>
   <div class="flex w-full justify-between items-end">
-    <div class="flex items-center flex-col">
-      <pl-percent-sum :total="expectPay" :current="payment" />
-      <h2 class="text-base-weak text-2xl font-bold leading-tight">
-        {{ payment }} ₽
+    <div class="flex flex-col space-y-3">
+      <div class="flex items-center space-x-2">
+        <pl-percent-sum :total="expectPay" :current="payment" />
+        <span v-if="payment > expectPay" class="text-warning">+ {{ (payment - expectPay).toFixed(2) }} ₽</span>
+        <span v-else-if="payment < expectPay" class="text-accent">- {{ (expectPay - payment).toFixed(2) }} ₽</span>
+      </div>
+      <h2 class="text-base-weak leading-tight">
+        <span class="text-2xl font-bold">{{ payment }} ₽</span>
+        
       </h2>
     </div>
     <pl-btn-icon icon-name="plus" size="l" class="rounded-full bg-primary" @click="onAdd" />
