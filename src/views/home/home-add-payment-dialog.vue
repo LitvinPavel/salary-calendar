@@ -40,11 +40,11 @@ import { ref } from "vue";
 export default {
   setup() {
     const month = ref({});
-    let salary = 0;
+    let salary = ref(null);
 
     const onAdd = ($event, close, sum) => {
       close($event, sum);
-      salary = 0;
+      sum = null;
     }
     return {
       month,

@@ -17,19 +17,19 @@
           <div class="pr-3">
             <span class="text-xxs leading-none uppercase opacity-70">Ожидается</span>
             <h3 class="text-base-weak leading-none">
-              {{ (daily * workDays.length).toFixed(2) }} ₽
+              {{ toSumFormat(daily * workDays.length) }} ₽
             </h3>
           </div>
           <div class="px-3">
             <span class="text-xxs leading-none uppercase opacity-70">В день</span>
             <h3 class="text-base-weak leading-none">
-              {{ daily.toFixed(2) }} ₽
+              {{ toSumFormat(daily) }} ₽
             </h3>
           </div>
           <div class="px-3">
             <span class="text-xxs leading-none uppercase opacity-70">в час</span>
             <h3 class="text-base-weak leading-none">
-              {{ (daily / 8).toFixed(2) }} ₽
+              {{ toSumFormat(daily / 8) }} ₽
             </h3>
           </div>
         </div>
@@ -46,6 +46,7 @@ import { useStore } from "vuex";
 
 import homeItemPayment from "./home-item-payment";
 import PART_WORK_DAYS_TYPES from "@/utils/enum/part-work-days-types";
+import toSumFormat from "@/utils/to-sum-format";
 
 export default {
   components: {
@@ -78,7 +79,8 @@ export default {
       lastSalary,
       daily,
       workDays,
-      PART_WORK_DAYS_TYPES
+      PART_WORK_DAYS_TYPES,
+      toSumFormat
     };
   }
 };

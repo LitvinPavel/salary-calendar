@@ -45,6 +45,7 @@ export default {
     });
     const onClose = (_, sum) => {
       store.dispatch(props.actionName, { show: false, sum });
+      sum = null;
     }
     return {
       active,

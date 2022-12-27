@@ -27,7 +27,7 @@
             {{ monthEnum[mKey] }}
             <span class="text-primary">{ {{ yKey }} }</span>
           </div>
-          <div>{{ year[mKey] }} ₽</div>
+          <div>{{ toSumFormat(year[mKey]) }} ₽</div>
         </li>
       </ul>
     </section>
@@ -95,6 +95,8 @@ import { useStore } from "vuex";
 import settingUpSalaryDialog from "@/views/setting/setting-up-salary-dialog";
 import settingVacationDialog from "@/views/setting/setting-vacation-dialog";
 
+import toSumFormat from "@/utils/to-sum-format";
+
 const monthEnum = [
   "Январь",
   "Февраль",
@@ -146,7 +148,8 @@ export default {
       onClearCalendarData,
       onClearVacation,
       onClearSalary,
-      monthEnum
+      monthEnum,
+      toSumFormat
     };
   }
 };

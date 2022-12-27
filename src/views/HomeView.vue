@@ -7,7 +7,7 @@
     <div class="inline-flex flex-col mx-auto mb-3 px-3 py-2 rounded-lg bg-secondary-strong">
       <span class="text-xxs leading-none uppercase opacity-70">оклад</span>
       <h3 class="text-base-weak leading-none">
-        {{lastSalary}} ₽
+        {{ toSumFormat(lastSalary) }} ₽
       </h3>
     </div>
     <pl-accordion>
@@ -47,6 +47,7 @@ import HomeItemVacation from "./home/home-item-vacation.vue";
 import HomeAddPaymentDialog from "@/views/home/home-add-payment-dialog.vue"
 
 import PART_WORK_DAYS_TYPES from "@/utils/enum/part-work-days-types";
+import toSumFormat from "@/utils/to-sum-format";
 
 const monthEnum = [
   "Январь",
@@ -93,7 +94,8 @@ export default {
       month,
       lastSalary,
       onChangeMonth,
-      PART_WORK_DAYS_TYPES
+      PART_WORK_DAYS_TYPES,
+      toSumFormat
     };
   }
 };

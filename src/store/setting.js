@@ -85,7 +85,7 @@ export default {
               ...state.vacationList[year][month].vacation,
               date
             ]
-            state.vacationList[year][month].vacation = [...new Set(arr)].sort()
+            state.vacationList[year][month].vacation = [...new Set(arr)].sort(( a, b ) =>  a - b)
           }
         })
         saveStorage(STORAGE_KEYS.VACATION, state.vacationList)
